@@ -1,3 +1,147 @@
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// 	"net/http"
+// )
+
+// func helloHandler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "Hay Hi i am a hello Handler")
+// }
+// func aboutHandler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "hi i am mujahid islam and i am a student of polytecnic ")
+// }
+
+// type Product struct {
+// 	Id          int `"json":"id`
+// 	Title       string
+// 	Description string
+// 	Price       float64
+// 	ImgUrl      string
+// }
+
+// var productsList []Product
+
+// func getproducts(w http.ResponseWriter, r *http.Request) {
+
+// 	encoder := json.NewEncoder(w)
+// 	encoder.Encode(productsList)
+
+// }
+
+// func main() {
+// 	mux := http.NewServeMux()
+// 	mux.HandleFunc("GET /hello", helloHandler)
+// 	mux.HandleFunc("GET /about", aboutHandler)
+// 	mux.HandleFunc("GET /products", getproducts)
+// 	fmt.Println("The Server is running frome :8080 port")
+// 	err := http.ListenAndServe(":8080", mux)
+// 	if err != nil {
+// 		fmt.Println("Server has error ", err)
+
+// 	}
+// }
+
+// func init() {
+// 	prd1 := Product{
+// 		Id:          1,
+// 		Title:       "Banana",
+// 		Description: "Banana is a sweet fruit",
+// 		Price:       30.5,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg",
+// 	}
+
+// 	prd2 := Product{
+// 		Id:          2,
+// 		Title:       "Apple",
+// 		Description: "Apple is a healthy fruit",
+// 		Price:       120.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg",
+// 	}
+
+// 	prd3 := Product{
+// 		Id:          3,
+// 		Title:       "Orange",
+// 		Description: "Orange is full of vitamin C",
+// 		Price:       80.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg",
+// 	}
+
+// 	prd4 := Product{
+// 		Id:          4,
+// 		Title:       "Mango",
+// 		Description: "Mango is the king of fruits",
+// 		Price:       150.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/9/90/Hapus_Mango.jpg",
+// 	}
+
+// 	prd5 := Product{
+// 		Id:          5,
+// 		Title:       "Pineapple",
+// 		Description: "Pineapple is juicy fruit",
+// 		Price:       90.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg",
+// 	}
+
+// 	prd6 := Product{
+// 		Id:          6,
+// 		Title:       "Grapes",
+// 		Description: "Grapes are small and sweet",
+// 		Price:       110.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_grapes.jpg",
+// 	}
+
+// 	prd7 := Product{
+// 		Id:          7,
+// 		Title:       "Watermelon",
+// 		Description: "Watermelon is refreshing",
+// 		Price:       60.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/e/ee/Watermelon_cross_BNC.jpg",
+// 	}
+
+// 	prd8 := Product{
+// 		Id:          8,
+// 		Title:       "Papaya",
+// 		Description: "Papaya helps digestion",
+// 		Price:       70.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/6/6b/Papaya_cross_section_BNC.jpg",
+// 	}
+
+// 	prd9 := Product{
+// 		Id:          9,
+// 		Title:       "Guava",
+// 		Description: "Guava is rich in fiber",
+// 		Price:       50.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/0/02/Guava_ID.jpg",
+// 	}
+
+// 	prd10 := Product{
+// 		Id:          10,
+// 		Title:       "Strawberry",
+// 		Description: "Strawberry is very tasty",
+// 		Price:       200.0,
+// 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg",
+// 	}
+
+// 	// productsList = append(
+// 	// 	productsList,
+// 	// 	prd1, prd2, prd3, prd4, prd5,
+// 	// 	prd6, prd7, prd8, prd9, prd10,
+// 	// )
+// 	productsList = append(productsList, prd1)
+// 	productsList = append(productsList, prd2)
+// 	productsList = append(productsList, prd3)
+// 	productsList = append(productsList, prd4)
+// 	productsList = append(productsList, prd5)
+// 	productsList = append(productsList, prd6)
+// 	productsList = append(productsList, prd7)
+// 	productsList = append(productsList, prd8)
+// 	productsList = append(productsList, prd9)
+// 	productsList = append(productsList, prd10)
+
+// }
+
 package main
 
 import (
@@ -6,37 +150,65 @@ import (
 	"net/http"
 )
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hey Hi, I am a hello handler")
+// Product represents a product entity
+// JSON tags are added for proper API responses
+type Product struct {
+	ID          int     `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	ImgURL      string  `json:"imgUrl"`
 }
 
+// in-memory product store
+var productsList []Product
+
+// helloHandler handles /hello route
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hey! Hi, I am the hello handler 👋")
+}
+
+// aboutHandler handles /about route
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hi, I am Mujahid Islam and I am a student of Polytechnic")
 }
 
-type Product struct {
-	Id          int     `json:"id"`
-	Title       string  `json:"title"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-	ImgUrl      string  `json:"imgUrl"`
-}
-
-var productsList []Product
-
-func productHandler(w http.ResponseWriter, r *http.Request) {
+// getProducts returns all products
+func getProducts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(productsList)
 }
 
+// createProduct adds a new product
+func createProduct(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var newProduct Product
+	err := json.NewDecoder(r.Body).Decode(&newProduct)
+	if err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
+		return
+	}
+
+	// simple auto-increment ID
+	newProduct.ID = len(productsList) + 1
+	productsList = append(productsList, newProduct)
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(newProduct)
+}
+
 func main() {
 	mux := http.NewServeMux()
+
 	mux.HandleFunc("GET /hello", helloHandler)
 	mux.HandleFunc("GET /about", aboutHandler)
-	mux.HandleFunc("GET /products", productHandler)
+	mux.HandleFunc("GET /products", getProducts)
+	mux.HandleFunc("POST /products", createProduct)
 
-	fmt.Println("Server is running on port :3000")
-	err := http.ListenAndServe(":3000", mux)
+	fmt.Println("Server running at http://localhost:8080")
+
+	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		fmt.Println("Server error:", err)
 	}
@@ -44,15 +216,15 @@ func main() {
 
 func init() {
 	productsList = []Product{
-		{Id: 1, Title: "Banana", Description: "Banana is a sweet fruit", Price: 30.5, ImgUrl: "banana.png"},
-		{Id: 2, Title: "Apple", Description: "Apple is healthy fruit", Price: 120.0, ImgUrl: "apple.png"},
-		{Id: 3, Title: "Orange", Description: "Orange is full of vitamin C", Price: 80.0, ImgUrl: "orange.png"},
-		{Id: 4, Title: "Mango", Description: "Mango is king of fruits", Price: 150.0, ImgUrl: "mango.png"},
-		{Id: 5, Title: "Pineapple", Description: "Pineapple is juicy fruit", Price: 90.0, ImgUrl: "pineapple.png"},
-		{Id: 6, Title: "Grapes", Description: "Grapes are small and sweet", Price: 110.0, ImgUrl: "grapes.png"},
-		{Id: 7, Title: "Watermelon", Description: "Watermelon is refreshing", Price: 60.0, ImgUrl: "watermelon.png"},
-		{Id: 8, Title: "Papaya", Description: "Papaya helps digestion", Price: 70.0, ImgUrl: "papaya.png"},
-		{Id: 9, Title: "Guava", Description: "Guava is rich in fiber", Price: 50.0, ImgUrl: "guava.png"},
-		{Id: 10, Title: "Strawberry", Description: "Strawberry is tasty", Price: 200.0, ImgUrl: "strawberry.png"},
+		{1, "Banana", "Banana is a sweet fruit", 30.5, "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg"},
+		{2, "Apple", "Apple is a healthy fruit", 120.0, "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"},
+		{3, "Orange", "Orange is full of vitamin C", 80.0, "https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg"},
+		{4, "Mango", "Mango is the king of fruits", 150.0, "https://upload.wikimedia.org/wikipedia/commons/9/90/Hapus_Mango.jpg"},
+		{5, "Pineapple", "Pineapple is juicy fruit", 90.0, "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg"},
+		{6, "Grapes", "Grapes are small and sweet", 110.0, "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_grapes.jpg"},
+		{7, "Watermelon", "Watermelon is refreshing", 60.0, "https://upload.wikimedia.org/wikipedia/commons/e/ee/Watermelon_cross_BNC.jpg"},
+		{8, "Papaya", "Papaya helps digestion", 70.0, "https://upload.wikimedia.org/wikipedia/commons/6/6b/Papaya_cross_section_BNC.jpg"},
+		{9, "Guava", "Guava is rich in fiber", 50.0, "https://upload.wikimedia.org/wikipedia/commons/0/02/Guava_ID.jpg"},
+		{10, "Strawberry", "Strawberry is very tasty", 200.0, "https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg"},
 	}
 }
